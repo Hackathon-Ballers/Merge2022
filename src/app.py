@@ -1,4 +1,3 @@
-from cachelib import RedisCache
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from flask_session import Session
 from user import User, getAllUsers, getUserById
@@ -26,6 +25,10 @@ def new():
         createNewPost(title=title, content=content, author=session['user'].username, belongs_to=None)
         return redirect("/")
     return render_template('new.html', current_user=session['user'])
+
+@app.route('/post/<post_id>')
+def post(post_id):
+    return render_template('post.html', current_user=session['user'], viewed_post=Post("Test_title", "Here is the content", "The author", "7/23/2022", 1))
 
 @app.route('/user/<viewed_user_id>')
 def user(viewed_user_id):
