@@ -10,26 +10,20 @@
     <div class="mx-auto container w-full flex items-center md:flex-row flex-col justify-between px-6 lg:px-0">
       <div class="flex flex-col justify-start items-start lg:w-2/5 px-2 lg:px-0">
         <div>
-          <p class="lg:text-5xl text-5xl text-black-600 dark:text-black-300 font-medium leading-none pb-10">Hello, this is {{viewed_user.username}}'s page!</p>
+            <p>{{viewed_user.pfp}}</p>
+        </div>
+        <div>
+          <p class="lg:text-5xl text-5xl text-black-600 dark:text-black-300 font-extrabold leading-none pb-10">Hello, this is {{viewed_user.username}}'s page!</p>
         </div>
         <div class="md:mt-3">
-          <p class="text-black-800 dark:text-black lg:text-4xl text-3xl font-extrabold leading-9">{{viewed_user.bio}}</p>
+          <p class="text-black-800 dark:text-black lg:text-4xl text-3xl font-medium leading-9 pb-10">About Me: <br><span class="text-xl">{{viewed_user.bio}}</span> </p>
         </div>
         <div class="md:mt-3">
-          <p class="lg:text-base text-sm leading-normal text-black-600 dark:text-black-300">Learn how Trello has leveraged Webber to consolidate it’s diverse range of services software</p>
+          <p class="lg:text-base text-sm leading-normal text-black-600 dark:text-black-300 pb-10">Learn how Trello has leveraged Webber to consolidate it’s diverse range of services software</p>
         </div>
         <div class="grid grid-cols-2 mt-8 gap-y-6">
           <div>
-            <p class="text-black-800 dark:text-black text-sm lg:text-base font-medium leading-none">Industry: <span class="font-semibold md:font-medium">Technology</span></p>
-          </div>
-          <div>
-            <p class="text-black-800 dark:text-black text-sm lg:text-base font-medium leading-none">Use case: <span class="font-semibold md:font-medium">Developer operations</span></p>
-          </div>
-          <div>
-            <p class="text-black-800 dark:text-black text-sm lg:text-base font-medium leading-none">Since: <span class="font-semibold md:font-medium">2018</span></p>
-          </div>
-          <div>
-            <p class="text-black-800 dark:text-black text-sm lg:text-base font-medium leading-none">Package: <span class="font-semibold md:font-medium">Enterprise+ </span></p>
+            <p class="text-black-800 dark:text-black text-sm lg:text-base font-medium leading-none">Password: <span class="font-semibold md:font-medium">{{viewed_user.password}}</span></p>
           </div>
         </div>
       </div>
@@ -87,8 +81,6 @@
             </div>
             <div class="mt-8">
               <p class="text-black-800 dark:text-black lg:text-base text-sm leading-normal">
-                Another writing challenge can be to take the individual sentences in the random paragraph and incorporate a single sentence from that into a new paragraph to create a short story. Unlike the random sentence generator, the sentences from the random paragraph will have some connection to one another so it will be a bit different. You also won't know exactly how many sentences will appear in the random paragraph.Another writing challenge can be to take the individual sentences in the random paragraph and incorporate a single sentence from that into a new paragraph to create a
-                short story. Unlike the random sentence generator, the sentences from the random paragraph will have some connection to one another so it will be a bit different. You also won't know exactly how many sentences will appear in the random paragraph.
               </p>
             </div>
           </div>
