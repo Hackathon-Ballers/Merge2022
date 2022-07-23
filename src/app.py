@@ -1,7 +1,7 @@
 from cachelib import RedisCache
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from flask_session import Session
-from user import User, getAllUsers
+from user import User, getAllUsers, getUserById
 from post import Post
 
 app = Flask(__name__)
@@ -30,11 +30,13 @@ def new():
         return redirect("/")
     return render_template('new.html', current_user=session['user'])
 
-@app.route('/user/<viewed_username>')
-def user(viewed_username):
-    if not viewed_username: return redirect("/")
+@app.route('/user/<viewed_user_id>')
+def user(viewed_user_id):
+    if not viewed_user_id: return redirect("/")
     if not session.get('user'): return redirect("/login")
-    return render_template('user.html', current_user=session['user'], viewed_username=viewed_username)
+    viewed_user = getUserById(viewed_user_id)
+    if not viewed_user: return redirect("/")
+    return render_template('user.html', current_user=session['user'], viewed_user=viewed_user)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
