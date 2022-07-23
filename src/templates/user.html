@@ -5,5 +5,91 @@
 {% endblock %}
 
 {% block content %}
-<h1>You are currently viewing {{viewed_username}}</h1>
+
+<div class="dark:bg-black-900">
+    <div class="mx-auto container w-full flex items-center md:flex-row flex-col justify-between px-6 lg:px-0">
+      <div class="flex flex-col justify-start items-start lg:w-2/5 px-2 lg:px-0">
+        <div>
+            <p>{{viewed_user.pfp}}</p>
+        </div>
+        <div>
+          <p class="lg:text-5xl text-5xl text-black-600 dark:text-black-300 font-extrabold leading-none pb-10">Hello, this is {{viewed_user.username}}'s page!</p>
+        </div>
+        <div class="md:mt-3">
+          <p class="text-black-800 dark:text-black lg:text-4xl text-3xl font-medium leading-9 pb-10">About Me: <br><span class="text-xl">{{viewed_user.bio}}</span> </p>
+        </div>
+        <div class="md:mt-3">
+          <p class="lg:text-base text-sm leading-normal text-black-600 dark:text-black-300 pb-10">Learn how Trello has leveraged Webber to consolidate it’s diverse range of services software</p>
+        </div>
+        <div class="grid grid-cols-2 mt-8 gap-y-6">
+          <div>
+            <p class="text-black-800 dark:text-black text-sm lg:text-base font-medium leading-none">Password: <span class="font-semibold md:font-medium">{{viewed_user.password}}</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-center items-center lg:w-2/5 mt-10 md:mt-0">
+      </div>
+    </div>
+    <div class="mx-auto container w-full flex xl:flex-row flex-col justify-between items-start mt-12 px-6 lg:px-0">
+      <div class="flex flex-col justify-start items-start xl:w-2/4">
+        <div>
+          <h2 class="text-black-800 dark:text-black lg:text-3xl text-2xl font-bold leading-7">The details</h2>
+        </div>
+        <div class="mt-8">
+          <p class="text-black-800 dark:text-black lg:text-base text-sm leading-normal">
+            Another writing challenge can be to take the individual sentences in the random paragraph and incorporate a single sentence from that into a new paragraph to create a short story. Unlike the random sentence generator, the sentences from the random paragraph will have some connection to one another so it will be a bit different. You also won't know exactly how many sentences will appear in the random paragraph.Another writing challenge can be to take the individual sentences in the random paragraph and incorporate a single sentence from that into a new paragraph to create a short
+            story. Unlike the random sentence generator, the sentences from the random paragraph will have some connection to one another so it will be a bit different. You also won't know exactly how many sentences will appear in the random paragraph.
+          </p>
+        </div>
+        <div class="mt-8 w-full">
+        </div>
+        <div class="mt-8 flex justify-start items-start flex-col">
+          <div>
+            <p class="text-black-800 dark:text-black lg:text-base text-sm font-semibold leading-none">Breakdown of milestones</p>
+          </div>
+          <div class="text-black-800 dark:text-black mt-4 lg:text-base text-sm leading-normal">
+            <ul>
+              <li class="flex justify-start items-start space-x-1 flex-row">
+                <div>-</div>
+                <div>Mauris ullamcorper neque sed mauris gravida, vel mollis velit molestie.</div>
+              </li>
+              <li class="flex justify-start items-start space-x-1 flex-row">
+                <div>-</div>
+                <div>Donec iaculis erat in vulputate venenatis.</div>
+              </li>
+              <li class="flex justify-start items-start space-x-1 flex-row">
+                <div>-</div>
+                <div>Vestibulum et velit et metus commodo iaculis.</div>
+              </li>
+              <li class="flex justify-start items-start space-x-1 flex-row">
+                <div>-</div>
+                <div>Sed et urna a felis accumsan commodo vel vel nibh.</div>
+              </li>
+              <li class="flex justify-start items-start space-x-1 flex-row">
+                <div>-</div>
+                <div>Praesent sollicitudin nulla non sollicitudin varius.</div>
+              </li>
+              <li class="flex justify-start items-start space-x-1 flex-row">
+                <div>-</div>
+                <div>Integer convallis orci sed diam volutpat feugiat.</div>
+              </li>
+              <li class="flex justify-start items-start space-x-1 flex-row">- Donec posuere arcu non semper maximus.</li>
+            </ul>
+          </div>
+          <div class="mt-8 flex-col justify-start items-start">
+            <div>
+            </div>
+            <div class="mt-8">
+              <p class="text-black-800 dark:text-black lg:text-base text-sm leading-normal">
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+
 {% endblock %}

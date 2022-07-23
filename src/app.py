@@ -1,23 +1,20 @@
 from cachelib import RedisCache
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from flask_session import Session
-from user import User, getAllUsers
-from post import Post
+from user import User, getAllUsers, getUserById
+from post import Post, createNewPost, getAllPosts
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-posts = []
-
 app.secret_key = 'super secret key'
 
 @app.route('/')
 def index():
-    global posts
     if not session.get('user'): return redirect("/login")
-    return render_template('index.html', current_user=session['user'], posts=posts[::-1])
+    return render_template('index.html', current_user=session['user'], posts=getAllPosts()[::-1])
 
 @app.route("/new", methods=["GET", "POST"])
 def new():
@@ -26,7 +23,7 @@ def new():
         title = request.form.get("title")
         content = request.form.get("content")
         if not title or not content: return redirect("/new")
-        posts.append(Post(title=title, content=content, author=session['user'].username))
+        createNewPost(title=title, content=content, author=session['user'].username, belongs_to=None)
         return redirect("/")
     return render_template('new.html', current_user=session['user'])
 
@@ -35,6 +32,7 @@ def user(viewed_user_id):
     if not viewed_user_id: return redirect("/")
     if not session.get('user'): return redirect("/login")
     viewed_user = getUserById(viewed_user_id)
+    if not viewed_user: return redirect("/")
     return render_template('user.html', current_user=session['user'], viewed_user=viewed_user)
 
 @app.route('/login', methods=['GET', 'POST'])

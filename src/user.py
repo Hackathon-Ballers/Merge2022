@@ -24,6 +24,7 @@ def getUserById(id):
     c = conn.cursor()
     c.execute("SELECT userId, pfp, username, password, bio FROM Users WHERE userId=?", (id,))
     user = c.fetchone()
+    if not user: return None
     conn.close()
     return User(id=user[0], pfp=user[1], username=user[2], password=user[3], bio=user[4])
 
