@@ -1,21 +1,13 @@
 from cachelib import RedisCache
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from flask_session import Session
-from user import User
+from user import User, getAllUsers
 from post import Post
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-
-users = [
-    User(id=1, pfp="https://i.imgur.com/XqQXQ.jpg", username="admin", password="admin"),
-    User(id=2, pfp="https://i.imgur.com/XqQXQ.jpg", username="Jeff", password="Jeff"),
-    User(id=3, pfp="https://i.imgur.com/XqQXQ.jpg", username="Joey", password="Joey"),
-    User(id=4, pfp="https://i.imgur.com/XqQXQ.jpg", username="Eli", password="Eli"),
-    User(id=5, pfp="https://i.imgur.com/XqQXQ.jpg", username="Jari", password="Jari")
-]
 
 posts = []
 
@@ -49,7 +41,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        for user in users:
+        for user in getAllUsers():
             if user.username != username or user.password != password: continue
             session['user'] = user
             return redirect("/")
