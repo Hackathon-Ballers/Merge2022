@@ -11,7 +11,7 @@
     <title>Document</title>
 </head>
 
-<body class="m-0 p-0">
+<body class="m-0 p-0 h-full">
     <!-- This example requires Tailwind CSS v2.0+ -->
     <nav class="bg-gray-800">
         <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
@@ -99,7 +99,7 @@
                             :class="{hidden: show_drop_down}" role="menu" aria-orientation="vertical"
                             aria-labelledby="user-menu-button" tabindex="-1">
                             <!-- Active: "bg-gray-100", Not Active: "" -->
-                            <a href="/user/{{current_user.username}}" class="block px-4 py-2 text-sm text-gray-700"
+                            <a href="/user/{{current_user.id}}" class="block px-4 py-2 text-sm text-gray-700"
                                 role="menuitem" tabindex="-1" id="user-menu-item-0">Profile</a>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
                                 id="user-menu-item-1">Settings</a>
@@ -145,13 +145,14 @@
         </div>
     </nav>
     <!-- component -->
-    <div class="w-full h-full">
+    <div class="w-full h-max">
         <dh-component>
             <div class="flex flex-no-wrap">
                 <!-- Sidebar starts -->
                 <!-- Remove class [ hidden ] and replace [ sm:flex ] with [ flex ] -->
                 <!--- more free and premium Tailwind CSS components at https://tailwinduikit.com/ --->
-                <div style="min-height: 1000px"
+                <!-- min-height: 1000px -->
+                <div
                     class="w-64 absolute sm:relative bg-gray-800 shadow md:h-full flex-col justify-between hidden sm:flex">
                     <!-- THE VALUE ABOVE (min-height) CHANGES THE WHOLE BAR'S HEIGHT-->
                     <div class="px-8">

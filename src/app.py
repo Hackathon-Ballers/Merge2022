@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from flask_session import Session
 from user import User, getAllUsers, getUserById
-from post import Post, createNewPost, getAllPosts
+from post import Post, createNewPost, getAllPosts, getPostById, getPostWhereBelongsTo, getTotalComments
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
@@ -13,7 +13,12 @@ app.secret_key = 'super secret key'
 @app.route('/')
 def index():
     if not session.get('user'): return redirect("/login")
-    return render_template('index.html', current_user=session['user'], posts=getAllPosts()[::-1])
+    posts = []
+    for post in getAllPosts():
+        if post.belongs_to: continue
+        post.totalComments = getTotalComments(post.id)
+        posts.append(post)
+    return render_template('index.html', current_user=session['user'], posts=posts[::-1])
 
 @app.route("/new", methods=["GET", "POST"])
 def new():
@@ -26,9 +31,19 @@ def new():
         return redirect("/")
     return render_template('new.html', current_user=session['user'])
 
-@app.route('/post/<post_id>')
+@app.route('/post/<post_id>', methods=["GET", "POST"])
 def post(post_id):
-    return render_template('post.html', current_user=session['user'], viewed_post=Post("Test_title", "Here is the content", "The author", "7/23/2022", 1))
+    if request.method == "POST":
+        comment = request.form.get("comment")
+        print(comment)
+        if not comment: return redirect("/post/" + post_id)
+        createNewPost(title="", content=comment, author=session['user'].username, belongs_to=post_id)
+        return redirect("/post/" + post_id)
+    if not post_id: return redirect("/")
+    post = getPostById(post_id)
+    if not post: return redirect("/")
+    comments = getPostWhereBelongsTo(post_id)
+    return render_template('post.html', comments=comments, current_user=session['user'], viewed_post=post)
 
 @app.route('/user/<viewed_user_id>')
 def user(viewed_user_id):
@@ -36,7 +51,12 @@ def user(viewed_user_id):
     if not session.get('user'): return redirect("/login")
     viewed_user = getUserById(viewed_user_id)
     if not viewed_user: return redirect("/")
-    return render_template('user.html', current_user=session['user'], viewed_user=viewed_user)
+    posts = []
+    for post in getAllPosts():
+        if post.author == viewed_user.username:
+            post.totalComments = getTotalComments(post.id)
+            posts.append(post)
+    return render_template('user.html', current_user=session['user'], viewed_user=viewed_user, posts=posts[::-1])
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

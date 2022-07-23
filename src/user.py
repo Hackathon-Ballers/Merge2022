@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import sqlite3
+from post import Post
 
 @dataclass
 class User:
@@ -43,6 +44,16 @@ def createNewUser(pfp, username, password, bio):
     conn.commit()
     conn.close()
     return getUser(username)
+
+def getPostsByUser(userId):
+    conn = sqlite3.connect('stackunderflow.db')
+    c = conn.cursor()
+    c.execute("SELECT postId, title, content, author, belongs_to FROM Posts WHERE author=?", (userId,))
+    posts = []
+    for post in c.fetchall():
+        posts.append(Post(id=post[0], title=post[1], content=post[2], author=post[3], belongs_to=post[4]))
+    conn.close()
+    return posts
 
 if __name__ == "__main__":
     for user in getAllUsers():
