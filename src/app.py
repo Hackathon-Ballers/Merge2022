@@ -22,7 +22,8 @@ def index():
         post.authorId = getUser(post.author).id
         post.author_pfp = getUser(post.author).pfp
         post.totalComments = getTotalComments(post.id)
-        post.totalViews = len(post.viewedBy)
+        post.totalViews = getPostById(post.id).totalViews
+        print(post.totalViews)
         posts.append(post)
     return render_template('index.html', current_user=session.get('user',None), posts=posts[::-1])
 
@@ -61,9 +62,15 @@ def post(post_id):
         if not author: return redirect("/post/" + post_id)
         createNewPost(title="", content=comment, author=author, belongs_to=post_id)
     if not post_id: return redirect("/")
+
+    if post_id not in session.get('viewed',[]):
+        updateViewCount(post_id)
+        session['viewed'] = session['viewed'] + [post_id] if "viewed" in session else [post_id]
+    # if session['user'].id not in post.viewedBy:
+    #     post.viewedBy.append(session['user'].id)
+
     post = getPostById(post_id)
-    if session['user'].id not in post.viewedBy:
-        post.viewedBy.append(session['user'].id)
+
     post.authorId = getUser(post.author).id
     post.author_pfp = getUser(post.author).pfp
     if not post: return redirect("/")
@@ -78,11 +85,11 @@ def post(post_id):
         tb_comment = TextBlob(comment)
         if tb_comment.sentiment.polarity < 0:
             session['comment'] = comment
-            return render_template('post.html', comments=comments, current_user=session.get('user', None), viewed_post=post, views=len(post.viewedBy), classes_to_add="")
+            return render_template('post.html', comments=comments, current_user=session.get('user', None), viewed_post=post, views=post.totalViews, classes_to_add="")
         if not comment: return redirect("/post/" + post_id)
         createNewPost(title="", content=comment, author=session['user'].username, belongs_to=post_id)
         return redirect("/post/" + post_id)
-    return render_template('post.html', comments=comments, current_user=session.get('user', None), viewed_post=post, views=len(post.viewedBy) ,classes_to_add="hidden")
+    return render_template('post.html', comments=comments, current_user=session.get('user', None), viewed_post=post, views=post.totalViews ,classes_to_add="hidden")
 
 @app.route('/user/<viewed_user_id>')
 def user(viewed_user_id):
@@ -137,6 +144,8 @@ def edit_user(viewed_user_id):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    print(session)
+    print("cookie")
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -155,14 +164,41 @@ def register():
         password = request.form['password']
         confirm_password = request.form['confirm_password']
         if password != confirm_password: return redirect("/register")
-        session['user'] = createNewUser("default.png", username, password, None)
+        session['user'] = createNewUser(pfp="../static/default.png", username=username, password=password, bio=None)
         return redirect("/")
     return render_template('register.html')
 
+@app.route("/trending")
+def trending():
+    posts = []
+    for post in getAllPosts():
+        if post.belongs_to: continue
+        post.authorId = getUser(post.author).id
+        post.author_pfp = getUser(post.author).pfp
+        post.totalComments = getTotalComments(post.id)
+        post.totalViews = getPostById(post.id).totalViews
+        print(post.totalViews)
+        posts.append(post)
+    posts.sort(key=lambda x: getPostById(x.id).totalViews)
+    return render_template('index.html', current_user=session.get('user',None), posts=posts[::-1])
+
+@app.route("/hot")
+def hot():
+    posts = []
+    for post in getAllPosts():
+        if post.belongs_to: continue
+        post.authorId = getUser(post.author).id
+        post.author_pfp = getUser(post.author).pfp
+        post.totalComments = getTotalComments(post.id)
+        post.totalViews = getPostById(post.id).totalViews
+        print(post.totalViews)
+        posts.append(post)
+    posts.sort(key=lambda x: datetime.strptime(getPostById(x.id).date, "%Y-%m-%d %H:%M:%S"))
+    return render_template('index.html', current_user=session.get('user',None), posts=posts[::-1])
+
 @app.route('/logout')
 def logout():
-    session.pop('username', None)
-    print(session)
+    session = None
     return redirect("/login")
 
 @app.route('/test')
