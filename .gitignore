@@ -1,2 +1,3 @@
 src/flask_session/*
 src/__pycache__/*
+stackunderflow.db
