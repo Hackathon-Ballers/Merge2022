@@ -66,13 +66,16 @@ def post(post_id):
     post.author_pfp = getUser(post.author).pfp
     if not post: return redirect("/")
     comments = getPostWhereBelongsTo(post_id)
+    for comment in comments:
+        comment.authorId = getUser(comment.author).id
+        comment.author_pfp = getUser(comment.author).pfp
+
     if request.method == "POST":
         if not session.get('user'): return redirect("/login")
         comment = request.form.get("comment")
         tb_comment = TextBlob(comment)
         if tb_comment.sentiment.polarity < 0:
             session['comment'] = comment
-            comments = getPostWhereBelongsTo(post_id)
             print(post)
             return render_template('post.html', comments=comments, current_user=session.get('user', None), viewed_post=post, classes_to_add="")
         if not comment: return redirect("/post/" + post_id)
