@@ -1,5 +1,4 @@
 import os
-from turtle import pos
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from flask_session import Session
 from user import *
@@ -156,7 +155,7 @@ def register():
         password = request.form['password']
         confirm_password = request.form['confirm_password']
         if password != confirm_password: return redirect("/register")
-        session['user'] = createNewUser(None, username, password, None)
+        session['user'] = createNewUser("default.png", username, password, None)
         return redirect("/")
     return render_template('register.html')
 
