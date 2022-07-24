@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 import sqlite3
+import user
 
 @dataclass
 class Post:
@@ -62,6 +63,16 @@ def updateViewCount(post_id):
 
 def getTotalComments(postId):
     return len(getPostWhereBelongsTo(postId))
+
+def renamePostsByAuthor(prev_author, new_author):
+    posts = user.getPostsByAuthor(prev_author)
+    conn = sqlite3.connect('stackunderflow.db')
+    c = conn.cursor()
+    for post in posts:
+        c.execute("UPDATE Posts SET author=? WHERE postId=?", (new_author, post.id,))
+    conn.commit()
+    conn.close()
+
 
 if __name__ == "__main__":
     for post in getAllPosts():
