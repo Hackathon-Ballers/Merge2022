@@ -55,6 +55,14 @@ def getPostsByUser(userId):
     conn.close()
     return posts
 
+def editUser(userId, pfp, username, password, bio):
+    conn = sqlite3.connect('stackunderflow.db')
+    c = conn.cursor()
+    c.execute("UPDATE Users SET pfp=?, username=?, password=?, bio=? WHERE userId=?", (pfp, username, password, bio, userId))
+    conn.commit()
+    conn.close()
+    return getUserById(userId)
+
 if __name__ == "__main__":
     for user in getAllUsers():
         print(user)

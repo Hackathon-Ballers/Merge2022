@@ -7,15 +7,17 @@ class Post:
     title: str
     content: str
     author: str
-    date: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    date: str
     id: int = 0
+    author_pfp: str = "default.png"
+    authorId: int = -1
     belongs_to:any = None
     totalComments:int = 0
 
 def createNewPost(title, content, author, belongs_to):
     conn = sqlite3.connect('stackunderflow.db')
     c = conn.cursor()
-    c.execute("INSERT INTO Posts (title, content, author, belongs_to) VALUES (?, ?, ?, ?)", (title, content, author, belongs_to))
+    c.execute("INSERT INTO Posts (title, content, author, date, belongs_to) VALUES (?, ?, ?, ?, ?)", (title, content, author, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), belongs_to))
     conn.commit()
     conn.close()
     #add return?
@@ -23,29 +25,29 @@ def createNewPost(title, content, author, belongs_to):
 def getAllPosts():
     conn = sqlite3.connect('stackunderflow.db')
     c = conn.cursor()
-    c.execute("SELECT postId, title, content, author, belongs_to FROM Posts")
+    c.execute("SELECT postId, title, content, author, date, belongs_to FROM Posts")
     posts = []
     for post in c.fetchall():
-        posts.append(Post(id=post[0], title=post[1], content=post[2], author=post[3], belongs_to=post[4]))
+        posts.append(Post(id=post[0], title=post[1], content=post[2], author=post[3], date=post[4], belongs_to=post[5]))
     conn.close()
     return posts
 
 def getPostById(id):
     conn = sqlite3.connect('stackunderflow.db')
     c = conn.cursor()
-    c.execute("SELECT postId, title, content, author, belongs_to FROM Posts WHERE postId=?", (id,))
+    c.execute("SELECT postId, title, content, author, date, belongs_to FROM Posts WHERE postId=?", (id,))
     post = c.fetchone()
     if not post: return None
     conn.close()
-    return Post(id=post[0], title=post[1], content=post[2], author=post[3], belongs_to=post[4])
+    return Post(id=post[0], title=post[1], content=post[2], author=post[3], date=post[4], belongs_to=post[5])
 
 def getPostWhereBelongsTo(belongs_to):
     conn = sqlite3.connect('stackunderflow.db')
     c = conn.cursor()
-    c.execute("SELECT postId, title, content, author, belongs_to FROM Posts WHERE belongs_to=?", (belongs_to,))
+    c.execute("SELECT postId, title, content, author, date, belongs_to FROM Posts WHERE belongs_to=?", (belongs_to,))
     posts = []
     for post in c.fetchall():
-        posts.append(Post(id=post[0], title=post[1], content=post[2], author=post[3], belongs_to=post[4]))
+        posts.append(Post(id=post[0], title=post[1], content=post[2], author=post[3], date=post[4], belongs_to=post[5]))
     conn.close()
     return posts
 

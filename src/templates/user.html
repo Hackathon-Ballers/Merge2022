@@ -5,12 +5,11 @@
 {% endblock %}
 
 {% block content %}
-
 <div class="dark:bg-black-900">
   <div class="mx-auto container w-full flex items-center md:flex-row flex-col justify-between px-6 lg:px-0">
     <div class="flex flex-col justify-start items-start lg:w-2/5 px-2 lg:px-0">
       <div>
-        <p>{{viewed_user.pfp}}</p>
+        <img src="../static/{{viewed_user.pfp}}">{{viewed_user.pfp}}</img>
       </div>
       <div>
         <p class="lg:text-5xl text-5xl text-black-600 dark:text-black-300 font-extrabold leading-none pb-10">Hello, this

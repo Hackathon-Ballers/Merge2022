@@ -7,11 +7,12 @@
 {% block content %}
 
 <div class="flex">
+    <a href="/user/{{viewed_post.authorId}}">
     <div class="flex-shrink-0 mr-3">
         <img class="mt-2 rounded-full w-8 h-8 sm:w-10 sm:h-10"
-            src="https://images.unsplash.com/photo-1604426633861-11b2faead63c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80"
-            alt="">
+            src="../static/{{viewed_post.author_pfp}}">
     </div>
+    </a>
     <div class="flex-1 border rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
         <strong>{{viewed_post.author}}</strong> <span class="text-xs text-gray-400">{{viewed_post.date}}</span>
         <p class="text-sm">
@@ -25,11 +26,13 @@
         <div class="space-y-4">
             {% for comment in comments %}
             <div class="flex">
-                <div class="flex-shrink-0 mr-3">
-                    <img class="mt-3 rounded-full w-6 h-6 sm:w-8 sm:h-8"
-                        src="https://images.unsplash.com/photo-1604426633861-11b2faead63c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80"
-                        alt="">
-                </div>
+                <a href="/user/{{comment.authorId}}">
+                    <div class="flex-shrink-0 mr-3">
+                        <img class="mt-3 rounded-full w-6 h-6 sm:w-8 sm:h-8"
+                        src="../static/{{comment.author_pfp}}"
+                            alt="">
+                    </div>
+                </a>
                 <div class="flex-1 bg-gray-100 rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
                     <strong>{{comment.author}}</strong> <span class="text-xs text-gray-400">{{comment.date}}</span>
                     <p class="text-xs sm:text-sm">
