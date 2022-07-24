@@ -1,8 +1,8 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from flask_session import Session
-from user import User, getAllUsers, getUserById, editUser, createNewUser, getUser
-from post import Post, createNewPost, getAllPosts, getPostById, getPostWhereBelongsTo, getTotalComments
+from user import *
+from post import *
 from textblob import TextBlob
 
 app = Flask(__name__)
@@ -94,6 +94,7 @@ def user(viewed_user_id):
         if post.author == viewed_user.username:
             post.totalComments = getTotalComments(post.id)
             posts.append(post)
+    viewed_user.total_posts = len(getPostsByAuthor(viewed_user.username))
     return render_template('user.html', current_user=session['user'], viewed_user=viewed_user, posts=posts[::-1])
 
 @app.route('/user/<viewed_user_id>/edit', methods=["GET","POST"])
@@ -103,6 +104,7 @@ def edit_user(viewed_user_id):
     if not viewed_user_id: return redirect("/")
     if not session.get('user'): return redirect("/login")
     if str(viewed_user_id) != str(session['user'].id): return redirect(f"/user/{viewed_user_id}")
+    print(session['user'])
 
     if request.method == "POST":
         username = request.form.get("username")
@@ -118,16 +120,19 @@ def edit_user(viewed_user_id):
         file = request.files['pfp']
         # if user does not select file, browser also
         # submit a empty part without filename
-        if file.filename == '':
-            return redirect(f"/user/{viewed_user_id}/edit")
-        filename = username + "_" + str(viewed_user_id) + ".png"
-        file.save(os.path.join(uploads_dir, filename))
+        if request.files['pfp'].filename != '':
+            if file.filename == '':
+                return redirect(f"/user/{viewed_user_id}/edit")
+            filename = username + "_" + str(viewed_user_id) + ".png"
 
-        print("checkpoint 2")
-
-        if password != confirm_password: return redirect(f"/user/{viewed_user_id}/edit")
-        session['user'] = editUser(session['user'].id, filename, username, password, bio)
-        return redirect(f"/user/{viewed_user_id}")
+            file.save(os.path.join(uploads_dir, filename))
+            print(filename)
+            if password != confirm_password: return redirect(f"/user/{viewed_user_id}/edit")
+            print("passed!")
+            session['user'] = editUser(session['user'].id, filename, username, password, bio)
+            return redirect(f"/user/{viewed_user_id}")
+        session['user'] = editUser(session['user'].id, session['user'].pfp, username, password, bio)
+    print(session['user'])
     return render_template('edit_profile.html', current_user=session['user'])
 
 @app.route('/login', methods=['GET', 'POST'])

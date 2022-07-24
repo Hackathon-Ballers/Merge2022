@@ -9,6 +9,7 @@ class User:
     username:str
     password:str
     bio: str
+    total_posts: int = 0
 
 def getAllUsers():
     conn = sqlite3.connect('stackunderflow.db')
@@ -45,13 +46,14 @@ def createNewUser(pfp, username, password, bio):
     conn.close()
     return getUser(username)
 
-def getPostsByUser(userId):
+def getPostsByAuthor(username):
     conn = sqlite3.connect('stackunderflow.db')
     c = conn.cursor()
-    c.execute("SELECT postId, title, content, author, belongs_to FROM Posts WHERE author=?", (userId,))
+    c.execute("SELECT postId, title, content, author, belongs_to, date FROM Posts WHERE author=?", (username,))
     posts = []
     for post in c.fetchall():
-        posts.append(Post(id=post[0], title=post[1], content=post[2], author=post[3], belongs_to=post[4]))
+        print(post)
+        posts.append(Post(id=post[0], title=post[1], content=post[2], author=post[3], belongs_to=post[4], date=post[5]))
     conn.close()
     return posts
 
