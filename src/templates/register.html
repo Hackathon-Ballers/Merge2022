@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3"></script>
     {% block head %}{% endblock %}
     <title>Document</title>
 </head>
@@ -23,7 +24,7 @@
                     </a>
                 </p> -->
             </div>
-            <form class="mt-8 space-y-6" action="#" method="POST">
+            <form id="formarea" class="mt-8 space-y-6" action="#" method="POST">
                 <input type="hidden" name="remember" value="true">
                 <div class="rounded-md shadow-sm -space-y-px">
                     <div>
@@ -33,22 +34,23 @@
                             placeholder="Username">
                     </div>
                     <div>
-                        <label for="password" class="sr-only">Password</label>
+                        <label onChange="console.log(1)" for="password" class="sr-only">Password</label>
                         <input id="password" name="password" type="password" autocomplete="current-password" required
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Password">
                     </div>
                     <div>
-                        <label for="confirm_password" class="sr-only">Password</label>
-                        <input id="confirm_password" name="confirm_password" type="confirm_password" autocomplete="confirm-password"
+                        <label @change="comparePassword" for="confirm_password" class="sr-only">Password</label>
+                        <input id="confirm_password" name="confirm_password" type="confirm_password"
+                            autocomplete="confirm-password"
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Confirm Password">
                     </div>
                 </div>
-
                 <div class="flex items-center justify-between">
                     <div class="text-sm">
-                        <a href="/login" class="font-medium text-indigo-600 hover:text-indigo-500"> Have an account? Login here!
+                        <a href="/login" class="font-medium text-indigo-600 hover:text-indigo-500"> Have an account?
+                            Login here!
                         </a>
                     </div>
                 </div>
@@ -70,6 +72,21 @@
                     </button>
                 </div>
             </form>
+            <script>
+                console.log("ran")
+                const pwd = document.getElementById("password");
+                const confirm_pwd = document.getElementById("confirm_password");
+                pwd.addEventListener('keyup', (e) => comparePassword());
+                confirm_pwd.addEventListener('keyup', (e) => comparePassword());
+
+                function comparePassword() {
+                    if (pwd.value != confirm_pwd.value) {
+                        confirm_pwd.classList.add("bg-red-100")
+                    } else {
+                        confirm_pwd.classList.remove("bg-red-100")
+                    }
+                }
+            </script>
         </div>
     </div>
 
