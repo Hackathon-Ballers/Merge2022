@@ -131,7 +131,8 @@ def edit_user(viewed_user_id):
             print("passed!")
             session['user'] = editUser(session['user'].id, filename, username, password, bio)
             return redirect(f"/user/{viewed_user_id}")
-        session['user'] = editUser(session['user'].id, session['user'].pfp, username, password, bio)
+        session['user'] = editUser(session['user'].id, session['user'].pfp, username, password, bio, education)
+        return redirect(f"/user/{viewed_user_id}")
     print(session['user'])
     return render_template('edit_profile.html', current_user=session['user'])
 
