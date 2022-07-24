@@ -55,7 +55,7 @@ def getPostWhereBelongsTo(belongs_to):
 def updateViewCount(post_id):
     conn = sqlite3.connect('stackunderflow.db')
     c = conn.cursor()
-    c.execute("UPDATE Posts SET views=views + 1 WHERE postId=?", (post_id))
+    c.execute("UPDATE Posts SET views=views + 1 WHERE postId=?", (post_id,))
     print("ok updated")
     conn.commit()
     conn.close()
