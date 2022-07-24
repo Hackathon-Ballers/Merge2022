@@ -4,6 +4,7 @@ from flask_session import Session
 from user import *
 from post import *
 from textblob import TextBlob
+import random
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
@@ -13,6 +14,8 @@ Session(app)
 app.secret_key = 'super secret key'
 #Image Directory
 uploads_dir = '/Users/jwang/Documents/Merge2022/src/assets'
+
+all_states = {}
 
 @app.route('/')
 def index():
@@ -60,6 +63,7 @@ def post(post_id):
         if not comment: return redirect("/post/" + post_id)
         author = session['user'].username
         if not author: return redirect("/post/" + post_id)
+        all_states[post_id] = random.randint(0, 99999)
         createNewPost(title="", content=comment, author=author, belongs_to=post_id)
     if not post_id: return redirect("/")
 
@@ -88,8 +92,13 @@ def post(post_id):
             return render_template('post.html', comments=comments, current_user=session.get('user', None), viewed_post=post, views=post.totalViews, classes_to_add="")
         if not comment: return redirect("/post/" + post_id)
         createNewPost(title="", content=comment, author=session['user'].username, belongs_to=post_id)
+        all_states[post_id] = random.randint(0, 99999)
         return redirect("/post/" + post_id)
     return render_template('post.html', comments=comments, current_user=session.get('user', None), viewed_post=post, views=post.totalViews ,classes_to_add="hidden")
+
+@app.route('/post/<post_id>/api')
+def api(post_id):
+    return {"state":all_states.get(post_id, 0)}
 
 @app.route('/user/<viewed_user_id>')
 def user(viewed_user_id):
