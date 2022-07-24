@@ -123,13 +123,14 @@ def edit_user(viewed_user_id):
     if str(viewed_user_id) != str(session['user'].id): return redirect(f"/user/{viewed_user_id}")
 
     if request.method == "POST":
+        prev_username = session['user'].username
         username = request.form.get("username")
         education = request.form.get("education")
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
         bio = request.form.get("bio")
 
-
+        renamePostsByAuthor(prev_username, username)
         # check if the post request has the file part
         print("checkpoint 1b")
         file = request.files['pfp']
