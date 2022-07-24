@@ -9,6 +9,8 @@ class Post:
     author: str
     date: str
     id: int = 0
+    viewedBy = []
+    totalViews:int = 0
     author_pfp: str = "default.png"
     authorId: int = -1
     belongs_to:any = None

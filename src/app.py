@@ -1,4 +1,5 @@
 import os
+from turtle import pos
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from flask_session import Session
 from user import *
@@ -22,6 +23,7 @@ def index():
         post.authorId = getUser(post.author).id
         post.author_pfp = getUser(post.author).pfp
         post.totalComments = getTotalComments(post.id)
+        post.totalViews = len(post.viewedBy)
         posts.append(post)
     return render_template('index.html', current_user=session.get('user',None), posts=posts[::-1])
 
@@ -29,7 +31,6 @@ def index():
 def new():
     if not session.get('user'): return redirect("/login")
     if 'confirm' in request.args:
-        print("griughreuighreiufgbreiugrb")
         title = session.get('title')
         content = session.get('content')
         author = session['user'].username
@@ -62,6 +63,8 @@ def post(post_id):
         createNewPost(title="", content=comment, author=author, belongs_to=post_id)
     if not post_id: return redirect("/")
     post = getPostById(post_id)
+    if session['user'].id not in post.viewedBy:
+        post.viewedBy.append(session['user'].id)
     post.authorId = getUser(post.author).id
     post.author_pfp = getUser(post.author).pfp
     if not post: return redirect("/")
@@ -76,12 +79,11 @@ def post(post_id):
         tb_comment = TextBlob(comment)
         if tb_comment.sentiment.polarity < 0:
             session['comment'] = comment
-            print(post)
-            return render_template('post.html', comments=comments, current_user=session.get('user', None), viewed_post=post, classes_to_add="")
+            return render_template('post.html', comments=comments, current_user=session.get('user', None), viewed_post=post, views=len(post.viewedBy), classes_to_add="")
         if not comment: return redirect("/post/" + post_id)
         createNewPost(title="", content=comment, author=session['user'].username, belongs_to=post_id)
         return redirect("/post/" + post_id)
-    return render_template('post.html', comments=comments, current_user=session.get('user', None), viewed_post=post, classes_to_add="hidden")
+    return render_template('post.html', comments=comments, current_user=session.get('user', None), viewed_post=post, views=len(post.viewedBy) ,classes_to_add="hidden")
 
 @app.route('/user/<viewed_user_id>')
 def user(viewed_user_id):
@@ -104,7 +106,6 @@ def edit_user(viewed_user_id):
     if not viewed_user_id: return redirect("/")
     if not session.get('user'): return redirect("/login")
     if str(viewed_user_id) != str(session['user'].id): return redirect(f"/user/{viewed_user_id}")
-    print(session['user'])
 
     if request.method == "POST":
         username = request.form.get("username")
@@ -113,7 +114,6 @@ def edit_user(viewed_user_id):
         confirm_password = request.form.get("confirm_password")
         bio = request.form.get("bio")
 
-        print(request.files)
 
         # check if the post request has the file part
         print("checkpoint 1b")
