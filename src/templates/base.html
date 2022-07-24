@@ -11,9 +11,9 @@
     <title>Document</title>
 </head>
 
-<body class="m-0 p-0 h-full">
+<body class="m-0 p-0" style="height:100%">
     <!-- This example requires Tailwind CSS v2.0+ -->
-    <nav class="bg-gray-800 sticky top-0">
+    <nav class="bg-gray-800 sticky top-0" style="z-index: 999999999">
         <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
             <div class="relative flex items-center justify-between h-16">
                 <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -131,15 +131,15 @@
         </div>
     </nav>
     <!-- component -->
-    <div class="w-full h-full" >
+    <div class="w-full" style="height:100%">
         <dh-component>
-            <div class="flex flex-no-wrap">
+            <div class="flex flex-no-wrap" style="height:100%">
                 <!-- Sidebar starts -->
                 <!-- Remove class [ hidden ] and replace [ sm:flex ] with [ flex ] -->
                 <!--- more free and premium Tailwind CSS components at https://tailwinduikit.com/ --->
                 <!-- min-height: 1000px -->
                 <div
-                    class="w-64 absolute sm:relative bg-gray-800 shadow md:h-screen flex-col justify-between hidden sm:flex h-0">
+                    class="bg-gray-800 shadow flex-col justify-between flex" style="min-height:100%">
                     <!-- THE VALUE ABOVE (min-height) CHANGES THE WHOLE BAR'S HEIGHT-->
                     <div class="px-8">
                         <div class="h-0 w-full flex items-center">
