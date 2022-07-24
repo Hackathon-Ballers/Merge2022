@@ -9,6 +9,7 @@ class User:
     username:str
     password:str
     bio: str
+    education: str = ""
     total_posts: int = 0
 
 def getAllUsers():
@@ -24,19 +25,19 @@ def getAllUsers():
 def getUserById(id):
     conn = sqlite3.connect('stackunderflow.db')
     c = conn.cursor()
-    c.execute("SELECT userId, pfp, username, password, bio FROM Users WHERE userId=?", (id,))
+    c.execute("SELECT userId, pfp, username, password, bio, education FROM Users WHERE userId=?", (id,))
     user = c.fetchone()
     if not user: return None
     conn.close()
-    return User(id=user[0], pfp=user[1], username=user[2], password=user[3], bio=user[4])
+    return User(id=user[0], pfp=user[1], username=user[2], password=user[3], bio=user[4], education=user[5])
 
 def getUser(username):
     conn = sqlite3.connect('stackunderflow.db')
     c = conn.cursor()
-    c.execute("SELECT userId, pfp, username, password, bio FROM Users WHERE username=?", (username,))
+    c.execute("SELECT userId, pfp, username, password, bio, education FROM Users WHERE username=?", (username,))
     user = c.fetchone()
     conn.close()
-    return User(id=user[0], pfp=user[1], username=user[2], password=user[3], bio=user[4])
+    return User(id=user[0], pfp=user[1], username=user[2], password=user[3], bio=user[4], education=user[5])
 
 def createNewUser(pfp, username, password, bio):
     conn = sqlite3.connect('stackunderflow.db')
@@ -57,10 +58,10 @@ def getPostsByAuthor(username):
     conn.close()
     return posts
 
-def editUser(userId, pfp, username, password, bio):
+def editUser(userId, pfp, username, password, bio, education):
     conn = sqlite3.connect('stackunderflow.db')
     c = conn.cursor()
-    c.execute("UPDATE Users SET pfp=?, username=?, password=?, bio=? WHERE userId=?", (pfp, username, password, bio, userId))
+    c.execute("UPDATE Users SET pfp=?, username=?, password=?, bio=?, education=? WHERE userId=?", (pfp, username, password, bio, education, userId))
     conn.commit()
     conn.close()
     return getUserById(userId)
