@@ -20,7 +20,7 @@ def createNewPost(title, content, author, belongs_to):
     c.execute("INSERT INTO Posts (title, content, author, date, belongs_to) VALUES (?, ?, ?, ?, ?)", (title, content, author, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), belongs_to))
     conn.commit()
     conn.close()
-    #add return?
+    return getPostById(c.lastrowid)
 
 def getAllPosts():
     conn = sqlite3.connect('stackunderflow.db')
