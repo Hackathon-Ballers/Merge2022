@@ -210,10 +210,35 @@
                 placeholder="Write an article..." required=""></textarea>
         </div>
     </div>
-    <button type="submit"
+    <p class="ml-auto text-xs text-gray-500 light:text-gray-400">180 Characters <strong>minimum</strong>
+    </p>
+
+    <button id="submit-button-post" type="submit"
         class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
         Publish post
     </button>
+    <script>
+        text = document.getElementById("editor")
+        document.getElementById("submit-button-post").setAttribute("disabled", "")
+        document.getElementById("submit-button-post").classList.remove("bg-blue-700")
+        document.getElementById("submit-button-post").classList.add("bg-gray-400")
+        document.getElementById("submit-button-post").classList.remove("hover:bg-blue-800")
+
+        text.addEventListener("input", function () {
+            if (text.value.length >= 180) {
+                document.getElementById("submit-button-post").removeAttribute("disabled")
+                document.getElementById("submit-button-post").classList.add("bg-blue-700")
+                document.getElementById("submit-button-post").classList.remove("bg-gray-400")
+                document.getElementById("submit-button-post").classList.add("hover:bg-blue-800")
+            } else {
+                document.getElementById("submit-button-post").setAttribute("disabled", "")
+                document.getElementById("submit-button-post").classList.remove("bg-blue-700")
+                document.getElementById("submit-button-post").classList.add("bg-gray-400")
+                document.getElementById("submit-button-post").classList.remove("hover:bg-blue-800")
+            }
+        })
+
+    </script>
 </form>
 
 {% endblock %}
